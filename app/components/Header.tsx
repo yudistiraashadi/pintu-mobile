@@ -7,11 +7,9 @@ import {
   View,
   ViewStyle,
 } from "react-native"
-import { isRTL, translate } from "../i18n"
 import { colors, spacing } from "../theme"
 import { ExtendedEdge, useSafeAreaInsetsStyle } from "../utils/useSafeAreaInsetsStyle"
-import { Icon, IconTypes } from "./Icon"
-import { Text, TextProps } from "./Text"
+import { Text } from "native-base"
 
 export interface HeaderProps {
   /**
@@ -43,78 +41,31 @@ export interface HeaderProps {
   /**
    * Title text to display if not using `tx` or nested components.
    */
-  title?: TextProps["text"]
-  /**
-   * Title text which is looked up via i18n.
-   */
-  titleTx?: TextProps["tx"]
-  /**
-   * Optional options to pass to i18n. Useful for interpolation
-   * as well as explicitly setting locale or translation fallbacks.
-   */
-  titleTxOptions?: TextProps["txOptions"]
-  /**
-   * Icon that should appear on the left.
-   * Can be used with `onLeftPress`.
-   */
-  leftIcon?: IconTypes
-  /**
-   * An optional tint color for the left icon
-   */
-  leftIconColor?: string
+  title?: string
   /**
    * Left action text to display if not using `leftTx`.
    * Can be used with `onLeftPress`. Overrides `leftIcon`.
    */
-  leftText?: TextProps["text"]
-  /**
-   * Left action text text which is looked up via i18n.
-   * Can be used with `onLeftPress`. Overrides `leftIcon`.
-   */
-  leftTx?: TextProps["tx"]
+  leftText?: string
   /**
    * Left action custom ReactElement if the built in action props don't suffice.
    * Overrides `leftIcon`, `leftTx` and `leftText`.
    */
   LeftActionComponent?: ReactElement
   /**
-   * Optional options to pass to i18n. Useful for interpolation
-   * as well as explicitly setting locale or translation fallbacks.
-   */
-  leftTxOptions?: TextProps["txOptions"]
-  /**
    * What happens when you press the left icon or text action.
    */
   onLeftPress?: TouchableOpacityProps["onPress"]
   /**
-   * Icon that should appear on the right.
-   * Can be used with `onRightPress`.
-   */
-  rightIcon?: IconTypes
-  /**
-   * An optional tint color for the right icon
-   */
-  rightIconColor?: string
-  /**
    * Right action text to display if not using `rightTx`.
    * Can be used with `onRightPress`. Overrides `rightIcon`.
    */
-  rightText?: TextProps["text"]
-  /**
-   * Right action text text which is looked up via i18n.
-   * Can be used with `onRightPress`. Overrides `rightIcon`.
-   */
-  rightTx?: TextProps["tx"]
+  rightText?: string
   /**
    * Right action custom ReactElement if the built in action props don't suffice.
    * Overrides `rightIcon`, `rightTx` and `rightText`.
    */
   RightActionComponent?: ReactElement
-  /**
-   * Optional options to pass to i18n. Useful for interpolation
-   * as well as explicitly setting locale or translation fallbacks.
-   */
-  rightTxOptions?: TextProps["txOptions"]
   /**
    * What happens when you press the right icon or text action.
    */
@@ -127,11 +78,7 @@ export interface HeaderProps {
 
 interface HeaderActionProps {
   backgroundColor?: string
-  icon?: IconTypes
-  iconColor?: string
-  text?: TextProps["text"]
-  tx?: TextProps["tx"]
-  txOptions?: TextProps["txOptions"]
+  text?: string
   onPress?: TouchableOpacityProps["onPress"]
   ActionComponent?: ReactElement
 }
@@ -146,24 +93,14 @@ export function Header(props: HeaderProps) {
   const {
     backgroundColor = colors.background,
     LeftActionComponent,
-    leftIcon,
-    leftIconColor,
     leftText,
-    leftTx,
-    leftTxOptions,
     onLeftPress,
     onRightPress,
     RightActionComponent,
-    rightIcon,
-    rightIconColor,
     rightText,
-    rightTx,
-    rightTxOptions,
     safeAreaEdges = ["top"],
     title,
     titleMode = "center",
-    titleTx,
-    titleTxOptions,
     titleContainerStyle: $titleContainerStyleOverride,
     style: $styleOverride,
     titleStyle: $titleStyleOverride,
@@ -172,18 +109,14 @@ export function Header(props: HeaderProps) {
 
   const $containerInsets = useSafeAreaInsetsStyle(safeAreaEdges)
 
-  const titleContent = titleTx ? translate(titleTx, titleTxOptions) : title
+  const titleContent = title
 
   return (
     <View style={[$container, $containerInsets, { backgroundColor }, $containerStyleOverride]}>
       <View style={[$wrapper, $styleOverride]}>
         <HeaderAction
-          tx={leftTx}
           text={leftText}
-          icon={leftIcon}
-          iconColor={leftIconColor}
           onPress={onLeftPress}
-          txOptions={leftTxOptions}
           backgroundColor={backgroundColor}
           ActionComponent={LeftActionComponent}
         />
@@ -197,22 +130,15 @@ export function Header(props: HeaderProps) {
             ]}
             pointerEvents="none"
           >
-            <Text
-              weight="medium"
-              size="md"
-              text={titleContent}
-              style={[$title, $titleStyleOverride]}
-            />
+            <Text fontWeight="medium" size="md" style={[$title, $titleStyleOverride]}>
+              {titleContent}
+            </Text>
           </View>
         )}
 
         <HeaderAction
-          tx={rightTx}
           text={rightText}
-          icon={rightIcon}
-          iconColor={rightIconColor}
           onPress={onRightPress}
-          txOptions={rightTxOptions}
           backgroundColor={backgroundColor}
           ActionComponent={RightActionComponent}
         />
@@ -222,9 +148,9 @@ export function Header(props: HeaderProps) {
 }
 
 function HeaderAction(props: HeaderActionProps) {
-  const { backgroundColor, icon, text, tx, txOptions, onPress, ActionComponent, iconColor } = props
+  const { backgroundColor, text, onPress, ActionComponent } = props
 
-  const content = tx ? translate(tx, txOptions) : text
+  const content = text
 
   if (ActionComponent) return ActionComponent
 
@@ -236,21 +162,10 @@ function HeaderAction(props: HeaderActionProps) {
         disabled={!onPress}
         activeOpacity={0.8}
       >
-        <Text weight="medium" size="md" text={content} style={$actionText} />
+        <Text fontWeight="medium" size="md" style={$actionText}>
+          {content}
+        </Text>
       </TouchableOpacity>
-    )
-  }
-
-  if (icon) {
-    return (
-      <Icon
-        size={24}
-        icon={icon}
-        color={iconColor}
-        onPress={onPress}
-        containerStyle={[$actionIconContainer, { backgroundColor }]}
-        style={isRTL ? { transform: [{ rotate: "180deg" }] } : {}}
-      />
     )
   }
 
