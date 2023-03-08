@@ -7,7 +7,6 @@ import {
   View,
   ViewStyle,
 } from "react-native"
-import { colors, spacing } from "../theme"
 import { ExtendedEdge, useSafeAreaInsetsStyle } from "../utils/useSafeAreaInsetsStyle"
 import { Text } from "native-base"
 
@@ -91,7 +90,7 @@ interface HeaderActionProps {
  */
 export function Header(props: HeaderProps) {
   const {
-    backgroundColor = colors.background,
+    backgroundColor = "#fff",
     LeftActionComponent,
     leftText,
     onLeftPress,
@@ -130,7 +129,7 @@ export function Header(props: HeaderProps) {
             ]}
             pointerEvents="none"
           >
-            <Text fontWeight="medium" size="md" style={[$title, $titleStyleOverride]}>
+            <Text fontWeight="bold" fontSize="2xl" style={[$title, $titleStyleOverride]}>
               {titleContent}
             </Text>
           </View>
@@ -162,7 +161,7 @@ function HeaderAction(props: HeaderActionProps) {
         disabled={!onPress}
         activeOpacity={0.8}
       >
-        <Text fontWeight="medium" size="md" style={$actionText}>
+        <Text fontWeight="medium" fontSize="md" style={$actionText}>
           {content}
         </Text>
       </TouchableOpacity>
@@ -192,21 +191,12 @@ const $actionTextContainer: ViewStyle = {
   alignItems: "center",
   justifyContent: "center",
   height: "100%",
-  paddingHorizontal: spacing.medium,
+  paddingHorizontal: 16,
   zIndex: 2,
 }
 
 const $actionText: TextStyle = {
-  color: colors.tint,
-}
-
-const $actionIconContainer: ViewStyle = {
-  flexGrow: 0,
-  alignItems: "center",
-  justifyContent: "center",
-  height: "100%",
-  paddingHorizontal: spacing.medium,
-  zIndex: 2,
+  color: "#000",
 }
 
 const $actionFillerContainer: ViewStyle = {
@@ -219,7 +209,7 @@ const $titleWrapperCenter: ViewStyle = {
   height: "100%",
   width: "100%",
   position: "absolute",
-  paddingHorizontal: spacing.huge,
+  paddingHorizontal: 48,
   zIndex: 1,
 }
 

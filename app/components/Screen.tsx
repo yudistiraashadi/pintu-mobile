@@ -12,7 +12,6 @@ import {
   View,
   ViewStyle,
 } from "react-native"
-import { colors } from "../theme"
 import { ExtendedEdge, useSafeAreaInsetsStyle } from "../utils/useSafeAreaInsetsStyle"
 
 interface BaseScreenProps {
@@ -189,7 +188,7 @@ function ScreenWithScrolling(props: ScreenProps) {
 
 export function Screen(props: ScreenProps) {
   const {
-    backgroundColor = colors.background,
+    backgroundColor = "#fff",
     KeyboardAvoidingViewProps,
     keyboardOffset = 0,
     safeAreaEdges,

@@ -18,11 +18,65 @@ import { useInitialRootStore } from "./models"
 import { AppNavigator, useNavigationPersistence } from "./navigators"
 import { ErrorBoundary } from "./screens/ErrorScreen/ErrorBoundary"
 import * as storage from "./utils/storage"
-import { customFontsToLoad } from "./theme"
 import { setupReactotron } from "./services/reactotron"
 import Config from "./config"
 
-import { NativeBaseProvider } from "native-base"
+import { NativeBaseProvider, extendTheme } from "native-base"
+
+import { QueryClient, QueryClientProvider } from "react-query"
+
+// Create a client
+const queryClient = new QueryClient()
+
+const theme = extendTheme({
+  fontConfig: {
+    SFProDisplay: {
+      100: {
+        normal: "SF-Pro-Display-Light",
+        italic: "SF-Pro-Display-LightItalic",
+      },
+      200: {
+        normal: "SF-Pro-Display-Light",
+        italic: "SF-Pro-Display-LightItalic",
+      },
+      300: {
+        normal: "SF-Pro-Display-Light",
+        italic: "SF-Pro-Display-LightItalic",
+      },
+      400: {
+        normal: "SF-Pro-Display-Regular",
+        italic: "SF-Pro-Display-RegularItalic",
+      },
+      500: {
+        normal: "SF-Pro-Display-Medium",
+        italic: "SF-Pro-Display-MediumItalic",
+      },
+      600: {
+        normal: "SF-Pro-Display-Medium",
+        italic: "SF-Pro-Display-MediumItalic",
+      },
+      700: {
+        normal: "SF-Pro-Display-Bold",
+        italic: "SF-Pro-Display-BoldItalic",
+      },
+      800: {
+        normal: "SF-Pro-Display-Bold",
+        italic: "SF-Pro-Display-BoldItalic",
+      },
+      900: {
+        normal: "SF-Pro-Display-Bold",
+        italic: "SF-Pro-Display-BoldItalic",
+      },
+    },
+  },
+
+  // Make sure values below matches any of the keys in `fontConfig`
+  fonts: {
+    heading: "SFProDisplay",
+    body: "SFProDisplay",
+    mono: "SFProDisplay",
+  },
+})
 
 // Set up Reactotron, which is a free desktop app for inspecting and debugging
 // React Native apps. Learn more here: https://github.com/infinitered/reactotron
@@ -77,8 +131,6 @@ function App(props: AppProps) {
     isRestored: isNavigationStateRestored,
   } = useNavigationPersistence(storage, NAVIGATION_PERSISTENCE_KEY)
 
-  const [areFontsLoaded] = useFonts(customFontsToLoad)
-
   const { rehydrated } = useInitialRootStore(() => {
     // This runs after the root store has been initialized and rehydrated.
 
@@ -95,7 +147,7 @@ function App(props: AppProps) {
   // In iOS: application:didFinishLaunchingWithOptions:
   // In Android: https://stackoverflow.com/a/45838109/204044
   // You can replace with your own loading component if you wish.
-  if (!rehydrated || !isNavigationStateRestored || !areFontsLoaded) return null
+  if (!rehydrated || !isNavigationStateRestored) return null
 
   const linking = {
     prefixes: [prefix],
@@ -106,13 +158,15 @@ function App(props: AppProps) {
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
       <ErrorBoundary catchErrors={Config.catchErrors}>
-        <NativeBaseProvider>
-          <AppNavigator
-            linking={linking}
-            initialState={initialNavigationState}
-            onStateChange={onNavigationStateChange}
-          />
-        </NativeBaseProvider>
+        <QueryClientProvider client={queryClient}>
+          <NativeBaseProvider theme={theme}>
+            <AppNavigator
+              linking={linking}
+              initialState={initialNavigationState}
+              onStateChange={onNavigationStateChange}
+            />
+          </NativeBaseProvider>
+        </QueryClientProvider>
       </ErrorBoundary>
     </SafeAreaProvider>
   )

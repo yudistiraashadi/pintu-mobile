@@ -1,0 +1,37 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/SF-Pro-Display-Bold.ttf",
+      "sha1": "b31760a8e53d3d5a2fa63ed70d74c61db7e5771a"
+    },
+    {
+      "path": "assets/fonts/SF-Pro-Display-BoldItalic.ttf",
+      "sha1": "fd393cb3ff586764822f5e15f1a5524d0eabaae3"
+    },
+    {
+      "path": "assets/fonts/SF-Pro-Display-Light.ttf",
+      "sha1": "9a5c0dbf1c213b7cc9a47fbff9416ba25ab8c659"
+    },
+    {
+      "path": "assets/fonts/SF-Pro-Display-LightItalic.ttf",
+      "sha1": "d7d1e83db967a9905b28c78683234e7d3261f218"
+    },
+    {
+      "path": "assets/fonts/SF-Pro-Display-Medium.ttf",
+      "sha1": "af0e4a4d7f6b6cad021daf4c78cc664512cd0d50"
+    },
+    {
+      "path": "assets/fonts/SF-Pro-Display-MediumItalic.ttf",
+      "sha1": "fc567af5d72e830bb24ff53132c5515ca13d43e2"
+    },
+    {
+      "path": "assets/fonts/SF-Pro-Display-Regular.ttf",
+      "sha1": "879e38712cc5064b619c50929ca2299c8a02276d"
+    },
+    {
+      "path": "assets/fonts/SF-Pro-Display-RegularItalic.ttf",
+      "sha1": "184bbdeb2ef7b91f5dcc0dc46845b8ea1912a350"
+    }
+  ]
+}

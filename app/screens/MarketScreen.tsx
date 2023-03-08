@@ -1,10 +1,10 @@
 import { observer } from "mobx-react-lite"
-import React, { FC } from "react"
+import React, { FC, useState } from "react"
 import { ViewStyle } from "react-native"
 import { Screen, Header } from "../components"
 import { AppStackScreenProps } from "../navigators"
 
-import { Box, Text } from "native-base"
+import { Box, CheckIcon, Select, Text } from "native-base"
 import { useQuery, useQueryClient } from "react-query"
 import axios from "axios"
 
@@ -15,6 +15,8 @@ interface MarketScreenProps extends AppStackScreenProps<"Market"> {}
  */
 export const MarketScreen: FC<MarketScreenProps> = observer(function MarketScreen() {
   const queryClient = useQueryClient()
+
+  const [sortBy, setSortBy] = useState("default")
 
   const pricesQuery = useQuery<any, Error>(
     "prices",
@@ -32,10 +34,30 @@ export const MarketScreen: FC<MarketScreenProps> = observer(function MarketScree
     return res.data.payload
   })
 
-  /**
-   * Render header
-   */
   const _renderHeader = () => <Header backgroundColor="white" title={"Market"} />
+
+  const _renderSorting = () => (
+    <Box bgColor={"white"} flexDir={"row"} alignItems={"center"} justifyContent={"flex-end"}>
+      <Text mr={2}>Sort by:</Text>
+      <Select
+        bgColor={"white"}
+        selectedValue={sortBy}
+        minWidth="150"
+        accessibilityLabel="Choose Sort"
+        placeholder="Choose Sort"
+        mt={1}
+        _selectedItem={{
+          bg: "teal.500",
+          endIcon: <CheckIcon size="5" />,
+        }}
+        onValueChange={(itemValue) => setSortBy(itemValue)}
+      >
+        <Select.Item label="Default" value="default" />
+        <Select.Item label="Name Asc" value="name-asc" />
+        <Select.Item label="Name Desc" value="name-desc" />
+      </Select>
+    </Box>
+  )
 
   const _renderListItem = ({ currency, price }) => {
     return (
@@ -91,6 +113,19 @@ export const MarketScreen: FC<MarketScreenProps> = observer(function MarketScree
       <Box>
         {currencyQuery.data
           .filter((i) => i.currencyGroup !== "IDR")
+          .sort((a, b) => {
+            if (sortBy === "name-asc") {
+              if (a.currencyGroup.toLowerCase() < b.currencyGroup.toLowerCase()) return -1
+              if (a.currencyGroup.toLowerCase() > b.currencyGroup.toLowerCase()) return 1
+            }
+
+            if (sortBy === "name-desc") {
+              if (a.currencyGroup.toLowerCase() < b.currencyGroup.toLowerCase()) return 1
+              if (a.currencyGroup.toLowerCase() > b.currencyGroup.toLowerCase()) return -1
+            }
+
+            return 1
+          })
           .map((currency) => {
             let pricePair = currency.currencyGroup.toLowerCase() + "/idr"
             let price = pricesQuery.data.find((item) => item.pair == pricePair)
@@ -115,8 +150,9 @@ export const MarketScreen: FC<MarketScreenProps> = observer(function MarketScree
    */
   return (
     <>
-      {/* Header */}
       {_renderHeader()}
+
+      {_renderSorting()}
 
       <Screen preset={"scroll"} style={$screen}>
         {/* Content */}

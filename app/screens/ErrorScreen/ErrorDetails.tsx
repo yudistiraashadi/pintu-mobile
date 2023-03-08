@@ -1,7 +1,6 @@
 import React, { ErrorInfo } from "react"
 import { ScrollView, TextStyle, View, ViewStyle, TouchableOpacity, Text } from "react-native"
 import { Screen } from "../../components"
-import { colors, spacing } from "../../theme"
 
 export interface ErrorDetailsProps {
   error: Error
@@ -38,8 +37,8 @@ export function ErrorDetails(props: ErrorDetailsProps) {
 
 const $contentContainer: ViewStyle = {
   alignItems: "center",
-  paddingHorizontal: spacing.large,
-  paddingTop: spacing.extraLarge,
+  paddingHorizontal: 24,
+  paddingTop: 32,
   flex: 1,
 }
 
@@ -49,8 +48,8 @@ const $topSection: ViewStyle = {
 }
 
 const $heading: TextStyle = {
-  color: colors.error,
-  marginBottom: spacing.medium,
+  color: "#C03403",
+  marginBottom: 16,
   fontSize: 30,
   fontWeight: "bold",
   textAlign: "center",
@@ -58,8 +57,8 @@ const $heading: TextStyle = {
 
 const $errorSection: ViewStyle = {
   flex: 2,
-  backgroundColor: colors.separator,
-  marginVertical: spacing.medium,
+  backgroundColor: "#D7CEC9",
+  marginVertical: 16,
   borderRadius: 6,
 }
 
@@ -70,22 +69,22 @@ const $buttonSection: ViewStyle = {
 }
 
 const $errorSectionContentContainer: ViewStyle = {
-  padding: spacing.medium,
+  padding: 16,
 }
 
 const $errorContent: TextStyle = {
-  color: colors.error,
+  color: "#C03403",
   fontWeight: "bold",
 }
 
 const $errorBacktrace: TextStyle = {
-  marginTop: spacing.medium,
-  color: colors.textDim,
+  marginTop: 16,
+  color: "#564E4A",
 }
 
 const $resetButton: ViewStyle = {
-  backgroundColor: colors.error,
-  paddingHorizontal: spacing.huge,
-  paddingVertical: spacing.small,
+  backgroundColor: "#C03403",
+  paddingHorizontal: 48,
+  paddingVertical: 12,
   borderRadius: 35,
 }
